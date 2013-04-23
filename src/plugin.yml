@@ -1,0 +1,32 @@
+name: BkrChatReload
+main: ykt.BeYkeRYkt.BkrChatReload.BkrChatReload
+description: Plugin for chat
+author: BeYkeRYkt
+version: 1.1
+website: https://github.com/BeYkeRYkt/BkrChatReload
+softdepend: [Vault]
+
+commands:
+  pm:
+    description: Private Messages
+    usage: |
+           /<command> <player|console> <message>
+           Example: /<command> DoGzzz You're extinct! :(
+  clearme:
+    description: Clear Chat.
+    usage: /<command>
+  clearg:
+    description: Clear Global Chat.
+    usage: /<command>
+  a:
+    description: AdminChat
+    usage: /<command>
+permissions:
+  bkrchat.msg:
+    default: true
+  bkrchat.clearme:
+    default: true
+  bkrchat.clearg:
+    default: op
+  bkrchat.adminchat:
+    default: op
