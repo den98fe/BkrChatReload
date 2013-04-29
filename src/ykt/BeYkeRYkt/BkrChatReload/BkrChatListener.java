@@ -10,11 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 
+@SuppressWarnings("deprecation")
 public class BkrChatListener
   implements Listener{
  public BkrChatReload plugin;
@@ -23,8 +24,8 @@ public class BkrChatListener
 		plugin = instance;
 	}
  
-@EventHandler
-public void onPlayerChat(AsyncPlayerChatEvent event)
+@EventHandler(priority = EventPriority.LOWEST)
+public void onPlayerChat(PlayerChatEvent event)
 {	 
 	java.util.Date date = new java.util.Date(); 
 	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm:ss");
@@ -50,7 +51,7 @@ message = message
 
 message = Colors.all(message);
 
-if (chatMessage.startsWith("*")) {
+if (chatMessage.startsWith("^")) {
     ranged = false;
     if (player.hasPermission("bkrchat.global")) {
       message = (plugin.getConfig().getString("Chat.chat-global"));
@@ -182,7 +183,7 @@ Player p = event.getPlayer();
 
 	}
 
-@EventHandler
+@EventHandler(priority = EventPriority.LOWEST)
 public void onPlayerQuit(PlayerQuitEvent event)
 {
 	java.util.Date date = new java.util.Date(); 
