@@ -13,22 +13,31 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BkrChatReload extends JavaPlugin
 {
   public static final Logger _log = Logger.getLogger("Minecraft");
-  public final BkrChatListener BkrChatListener = new BkrChatListener(this);
-  static boolean usePEX = false;
-  static boolean usePB = false;
 public static Chat chat = null;
 public static Permission perms = null;
 
   public void onEnable()
   {
-      getCommand("pm").setExecutor(new MessageCommand(this));
+	    
+		//Setup Vault
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			this.getLogger().info("Vault dependency not found!");
+			getServer().getPluginManager().disablePlugin(this);
+		}
+	
+		getServer().getPluginManager().registerEvents(new BkrChatListener(this), this);
+		
+		setupPermissions();
+		setupChat();
+	  
+	      getCommand("pm").setExecutor(new MessageCommand(this));
+	    
 		PluginDescriptionFile pdFile = getDescription();
 		try {
 			FileConfiguration fc = getConfig();
@@ -57,23 +66,6 @@ public static Permission perms = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	  
-		//Implement listeners
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(BkrChatListener, this);
-
-	  
-		//Setup Vault
-		if (getServer().getPluginManager().getPlugin("Vault") == null) {
-			this.getLogger().info("Vault dependency not found!");
-			getServer().getPluginManager().disablePlugin(this);
-		}
-	
-		setupPermissions();
-		setupChat();
-	    getLogger().info("Vault loaded");
-	    getLogger().info("Plugin Enabled!");
-
 		
   }  
 
