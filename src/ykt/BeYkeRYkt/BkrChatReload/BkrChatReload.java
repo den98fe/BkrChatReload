@@ -29,7 +29,7 @@ public static Permission perms = null;
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
 			this.getLogger().info("Vault dependency not found!");
 			getServer().getPluginManager().disablePlugin(this);
-		}
+		}else
 	
 		getServer().getPluginManager().registerEvents(new BkrChatListener(this), this);
 		
@@ -49,15 +49,15 @@ public static Permission perms = null;
 				fc.addDefault("Chat.chat-global", "&6[Global]%PREFIX%%NAME%: %MSG%" );
 				fc.addDefault("Chat.chat-shout", "&4[Shout]%PREFIX%%NAME%: %MSG%" );
 				fc.addDefault("Chat.chat-whispering", "&9[Whispering]%PREFIX%%NAME%: %MSG%" );
-				fc.addDefault("Chat.player-join", "§4[BkrChat]§7%NAME% §6Joined the game" );
-				fc.addDefault("Chat.player-leave", "§4[BkrChat]§7%NAME% §6Left the game" );
-				fc.addDefault("Chat.adminonline", "§6Admins online" );
-				fc.addDefault("Chat.players", "§5Players" );
+				fc.addDefault("Chat.player-join", "&4[BkrChat]&7%NAME% &6Joined the game" );
+				fc.addDefault("Chat.player-leave", "&4[BkrChat]&7%NAME% &6Left the game" );
+				fc.addDefault("Chat.adminonline", "&6Admins online" );
+				fc.addDefault("Chat.players", "&5Players" );
 				fc.addDefault("Radius.main", 10);
 				fc.addDefault("Radius.shout", 20);
 				fc.addDefault("Radius.whispering", 3);
-				fc.addDefault("Locale.no-permissions", "§4You do not have permission." );
-				fc.addDefault("Locale.clearme", "§aYou have clearned your own chat." );
+				fc.addDefault("Locale.no-permissions", "You do not have permission." );
+				fc.addDefault("Locale.clearme", "You have clearned your own chat." );
 				fc.addDefault("Locale.adminchat", "Using: /a <your message> (not <>)");
 				fc.options().copyDefaults(true);
 				saveConfig();
@@ -123,13 +123,13 @@ public static Permission perms = null;
 	                          //When its done clearing
 	                          if(x == 119){
 	                                  //Tell the player that their chat is cleared
-	                                  player.sendMessage(ChatColor.AQUA + "[BkrChatReload] " + this.getConfig().getString("Locale.clearme"));
+	                                  player.sendMessage(ChatColor.AQUA + "[BkrChatReload] " + ChatColor.GREEN + this.getConfig().getString("Locale.clearme"));
 	                                  return true;
 	                          }
 	                  }
 	          }else{
 	              //Tell the player that they have no permisison.
-	              player.sendMessage(ChatColor.DARK_RED + "[BkrChatReload]" + this.getConfig().getString("Locale.no-permissions"));
+	              player.sendMessage(ChatColor.DARK_RED + "[BkrChatReload]" + ChatColor.RED + this.getConfig().getString("Locale.no-permissions"));
 	              return true;
 	          }
 	      }
@@ -153,7 +153,7 @@ public static Permission perms = null;
 	                      }
 	                      //if the player has no permission
 	              }else{
-		              player.sendMessage(ChatColor.DARK_RED + "[BkrChatReload]" + this.getConfig().getString("Locale.no-permissions"));
+		              player.sendMessage(ChatColor.DARK_RED + "[BkrChatReload]" + ChatColor.RED + this.getConfig().getString("Locale.no-permissions"));
 	                      return true;
 	              }
 	      }
@@ -161,23 +161,23 @@ public static Permission perms = null;
 	      if (command.getName().equalsIgnoreCase("a")) {
 	    		 if(player.hasPermission("bkrchat.adminchat") || (player.isOp())) {
 	          if (args.length > 0) {
-	            for (Player p : getServer().getOnlinePlayers())
+	            for (Player p : getServer().getOnlinePlayers()){
 	              if (canReadAdminChat(p)) {
 	                p.sendMessage(ChatColor.DARK_PURPLE + "[BkrChatReload:OpChanel] " + ChatColor.WHITE + player.getDisplayName() + ": " + msg);
 	                _log.info("[BkrChatReload:OpChanel] " + player.getDisplayName() + ": " + msg);
 		            return true;	
 	              }
+	          }
 	          }else {
-	            player.sendMessage(ChatColor.RED + "[BkrChatReload:OpChanel]" + this.getConfig().getString("Locale.adminchat"));
+	            player.sendMessage(ChatColor.RED + "[BkrChatReload:OpChanel]" + ChatColor.RED + this.getConfig().getString("Locale.adminchat"));
 	            return true;
 	          }
 	      }else{
-	        player.sendMessage(ChatColor.RED + "[BkrChatReload:OpChanel]" + this.getConfig().getString("Locale.no-permissions"));
+	        player.sendMessage(ChatColor.RED + "[BkrChatReload:OpChanel]" + ChatColor.RED + this.getConfig().getString("Locale.no-permissions"));
 	        return true;
 	      }
 	    		 }
 	      }
-	      
 		return false;
 	  }
 }
