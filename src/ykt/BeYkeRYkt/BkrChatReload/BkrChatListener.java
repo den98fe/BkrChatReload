@@ -1,5 +1,11 @@
 package ykt.BeYkeRYkt.BkrChatReload;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,6 +30,28 @@ public class BkrChatListener
 		plugin = instance;
 	}
  
+	  
+	  @EventHandler(priority=EventPriority.HIGH)
+	  public void Save(PlayerChatEvent e)
+	    throws Exception
+	  {
+	    Player player = e.getPlayer();
+	    if (!e.isCancelled()) {
+	      Calendar cal = new GregorianCalendar();
+	      File dir = new File("plugins/BkrChatReload/logs/chat");
+	      dir.mkdirs();
+
+	      File f = new File("plugins/BkrChatReload/logs/chat/" + new SimpleDateFormat("dd-MM-yyyy").format(cal.getTime()) + ".txt");
+	      if (!f.exists()) {
+	        f.createNewFile();
+	      }
+	      BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
+	      bw.write("[" + new SimpleDateFormat("kk:mm:ss").format(cal.getTime()) + "]" + player.getDisplayName() + ":" + e.getMessage());
+	      bw.newLine();
+	      bw.close();
+	    }
+	  }
+	
 @EventHandler(priority = EventPriority.LOWEST)
 public void onPlayerChat(PlayerChatEvent event)
 {	 
@@ -137,16 +165,18 @@ event.setMessage(chatMessage);
 }
 
 @EventHandler(priority=EventPriority.HIGH)
-public void onPlayerJoin(PlayerJoinEvent event)
+public void onPlayerJoin(final PlayerJoinEvent event)
 {
+	Player p = event.getPlayer();
 	java.util.Date date = new java.util.Date(); 
 	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm:ss");
 	String time = sdf.format(date);
-Player p = event.getPlayer();
-	  String players= "";
-	  String admins = "";
-
-	  for (Player player : Bukkit.getOnlinePlayers()) {
+    Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        public void run() {
+String players= "";
+String admins = "";
+	
+  	  for (Player player : Bukkit.getOnlinePlayers()) {
 
 	      if (player.isOp()) {
 
@@ -156,12 +186,24 @@ Player p = event.getPlayer();
 	      }
 
 	  }
-
+    	
 	  admins = admins.substring(0, admins.length());
 	  players = players.substring(0, players.length());
 
-	  event.getPlayer().sendMessage(plugin.getConfig().getString("Chat.adminonline") + ":§f"  + admins);
-	  event.getPlayer().sendMessage(plugin.getConfig().getString("Chat.players") + ":§f " + players);
+	  String adminmsg = plugin.getConfig().getString("Chat.adminonline") + ":&f"  + admins;
+	  
+	  adminmsg = Colors.all(adminmsg);
+	  
+	  String playermsg = plugin.getConfig().getString("Chat.players") + ":&f " + players;
+	  
+	  playermsg = Colors.all(playermsg);
+	  
+	  event.getPlayer().sendMessage(adminmsg);
+	  event.getPlayer().sendMessage(playermsg);
+    }
+    }
+    , 40L); 
+    
     String message = (plugin.getConfig().getString("Chat.player-join"));
     message = message
     .replace("%DISPLAYNAME%", p.getDisplayName())
