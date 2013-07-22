@@ -79,7 +79,7 @@ message = message
 
 message = Colors.all(message);
 
-if (chatMessage.startsWith("^")) {
+if (chatMessage.startsWith("!")) {
     ranged = false;
     if (player.hasPermission("bkrchat.global")) {
       message = (plugin.getConfig().getString("Chat.chat-global"));
@@ -108,7 +108,7 @@ if (chatMessage.startsWith("^")) {
 
   }
 
-if (chatMessage.startsWith("!")) {
+if (chatMessage.startsWith("%")) {
     range = plugin.getConfig().getInt("Radius.shout");
     message = plugin.getConfig().getString("Chat.chat-shout");
 
