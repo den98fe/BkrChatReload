@@ -48,7 +48,7 @@ public class BkrChatListener
 	      BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
 	      bw.write("[" + new SimpleDateFormat("kk:mm:ss").format(cal.getTime()) + "]" + player.getDisplayName() + ":" + e.getMessage());
 	      bw.newLine();
-	      bw.close();
+	      bw.close();cxvds
 	    }
 	  }
 	
